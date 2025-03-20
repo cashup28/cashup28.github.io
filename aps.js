@@ -2,30 +2,32 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 
 const connector = new TonConnectSDK.TonConnect({
-    manifestUrl: 'https://cashup28.github.io/ton-mini-app/tonconnect-manifest.json'
+    manifestUrl: 'https://cashup28.github.io/tonconnect-manifest.json'
 });
 
 const connectBtn = document.getElementById('connect-btn');
 const status = document.getElementById('status');
-const qrContainer = document.getElementById('qr-code');
 
 connectBtn.onclick = async () => {
-    const link = connector.connect({ bridgeUrl: "https://bridge.tonapi.io/bridge" });
+    const wallets = await connector.getWallets();
+    const wallet = wallets.find(w => w.appName === "tonkeeper") || wallets[0];
 
-    qrContainer.innerHTML = '';
-    new QRCode(qrContainer, {
-        text: link,
-        width: 220,
-        height: 220,
-    });
+    if (wallet) {
+        const universalUrl = connector.connect({
+            universalLink: wallet.universalLink,
+            bridgeUrl: wallet.bridgeUrl
+        });
 
-    status.innerText = 'QR kodunu TON Wallet uygulaman ile okut!';
+        // Telegram Mini App doğru bağlantı açma metodu:
+        tg.openLink(universalUrl);
+    } else {
+        status.innerText = "Cüzdan bulunamadı!";
+    }
 };
 
 connector.onStatusChange(wallet => {
     if (wallet) {
-        status.innerText = `✅ Cüzdan bağlandı:\n${wallet.account.address}`;
-        qrContainer.innerHTML = '';
+        status.innerText = `✅ Bağlanan cüzdan:\n${wallet.account.address}`;
         tg.MainButton.setText('Kapat').show();
         tg.sendData(JSON.stringify({ wallet: wallet.account.address }));
     }
