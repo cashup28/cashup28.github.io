@@ -1,6 +1,7 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
 
+// TON Connect başlatılıyor
 const connector = new TonConnectSDK.TonConnect({
     manifestUrl: 'https://cashup28.github.io/tonconnect-manifest.json'
 });
@@ -8,26 +9,28 @@ const connector = new TonConnectSDK.TonConnect({
 const connectBtn = document.getElementById('connect-btn');
 const status = document.getElementById('status');
 
+// Cüzdan bağlama işlemi
 connectBtn.onclick = async () => {
-    const walletsList = await connector.getWallets();
+    try {
+        const walletsList = await connector.getWallets();
+        if (walletsList.length === 0) {
+            status.innerText = "❌ Hiçbir TON cüzdanı bulunamadı!";
+            return;
+        }
 
-    const walletButtons = walletsList.map(wallet => {
-        const button = document.createElement('button');
-        button.textContent = wallet.name;
-        button.onclick = () => {
-            const connectUrl = connector.connect({
-                universalLink: wallet.universalLink,
-                bridgeUrl: wallet.bridgeUrl
-            });
-            tg.openLink(connectUrl);
-        };
-        return button;
-    });
+        const wallet = walletsList[0]; // İlk cüzdanı seç
+        const connectUrl = connector.connect({
+            universalLink: wallet.universalLink,
+            bridgeUrl: wallet.bridgeUrl
+        });
 
-    status.innerHTML = "";
-    walletButtons.forEach(btn => status.appendChild(btn));
+        tg.openLink(connectUrl); // Telegram içinden bağlantıyı aç
+    } catch (error) {
+        status.innerText = "⚠️ Bağlantı hatası: " + error.message;
+    }
 };
 
+// Cüzdan bağlandığında durumu güncelle
 connector.onStatusChange(wallet => {
     if (wallet) {
         status.innerText = `✅ Cüzdan başarıyla bağlandı:\n${wallet.account.address}`;
@@ -36,4 +39,5 @@ connector.onStatusChange(wallet => {
     }
 });
 
+// Telegram Mini App'i kapatma butonu
 tg.MainButton.onClick(() => tg.close());
