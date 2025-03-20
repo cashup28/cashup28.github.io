@@ -44,8 +44,11 @@ connector.onStatusChange(wallet => {
         status.innerText = `✅ Cüzdan başarıyla bağlandı:\n${wallet.account.address}`;
         tg.MainButton.setText('Kapat').show();
         tg.sendData(JSON.stringify({ wallet: wallet.account.address }));
+
+        // 🔹 Bağlantı tamamlandığında Mini App kapanmasını engelle
+        tg.MainButton.onClick(() => {
+            status.innerText = "✅ Bağlantı tamamlandı!";
+            tg.MainButton.hide(); // Kapatma butonunu gizle
+        });
     }
 });
-
-// Telegram Mini App'i kapatma
-tg.MainButton.onClick(() => tg.close());
