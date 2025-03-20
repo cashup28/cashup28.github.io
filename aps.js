@@ -9,25 +9,28 @@ const connectBtn = document.getElementById('connect-btn');
 const status = document.getElementById('status');
 
 connectBtn.onclick = async () => {
-    const wallets = await connector.getWallets();
-    const wallet = wallets.find(w => w.appName === "tonkeeper") || wallets[0];
+    const walletsList = await connector.getWallets();
 
-    if (wallet) {
-        const universalUrl = connector.connect({
-            universalLink: wallet.universalLink,
-            bridgeUrl: wallet.bridgeUrl
-        });
+    const walletButtons = walletsList.map(wallet => {
+        const button = document.createElement('button');
+        button.textContent = wallet.name;
+        button.onclick = () => {
+            const connectUrl = connector.connect({
+                universalLink: wallet.universalLink,
+                bridgeUrl: wallet.bridgeUrl
+            });
+            tg.openLink(connectUrl);
+        };
+        return button;
+    });
 
-        // Telegram Mini App doğru bağlantı açma metodu:
-        tg.openLink(universalUrl);
-    } else {
-        status.innerText = "Cüzdan bulunamadı!";
-    }
+    status.innerHTML = "";
+    walletButtons.forEach(btn => status.appendChild(btn));
 };
 
 connector.onStatusChange(wallet => {
     if (wallet) {
-        status.innerText = `✅ Bağlanan cüzdan:\n${wallet.account.address}`;
+        status.innerText = `✅ Cüzdan başarıyla bağlandı:\n${wallet.account.address}`;
         tg.MainButton.setText('Kapat').show();
         tg.sendData(JSON.stringify({ wallet: wallet.account.address }));
     }
