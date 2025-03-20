@@ -12,6 +12,7 @@ const status = document.getElementById('status');
 connectBtn.onclick = async () => {
     try {
         const walletsList = await connector.getWallets();
+        
         if (walletsList.length === 0) {
             status.innerText = "❌ Hiçbir TON cüzdanı bulunamadı!";
             return;
@@ -22,13 +23,17 @@ connectBtn.onclick = async () => {
         walletsList.forEach(wallet => {
             const button = document.createElement('button');
             button.textContent = wallet.name;
-            button.onclick = () => {
-                const connectUrl = connector.connect({
-                    universalLink: wallet.universalLink,
-                    bridgeUrl: wallet.bridgeUrl
-                });
+            button.onclick = async () => {
+                try {
+                    const connectUrl = await connector.connect({
+                        universalLink: wallet.universalLink,
+                        bridgeUrl: wallet.bridgeUrl
+                    });
 
-                tg.openLink(connectUrl);
+                    tg.openLink(connectUrl); // Telegram içinden bağlantıyı aç
+                } catch (err) {
+                    status.innerText = "❌ Bağlantı hatası: " + err.message;
+                }
             };
             status.appendChild(button);
         });
@@ -38,16 +43,16 @@ connectBtn.onclick = async () => {
     }
 };
 
-// Cüzdan bağlandığında işlem yap
+// Cüzdan bağlandığında işlemi yönet
 connector.onStatusChange(wallet => {
     if (wallet) {
         status.innerText = `✅ Cüzdan başarıyla bağlandı:\n${wallet.account.address}`;
-        tg.MainButton.setText('Kapat').show();
+        tg.MainButton.setText('Tamamlandı').show();
         tg.sendData(JSON.stringify({ wallet: wallet.account.address }));
 
-        // 🔹 Bağlantı tamamlandığında Mini App kapanmasını engelle
+        // Mini App kapanmasını engelle
         tg.MainButton.onClick(() => {
-            status.innerText = "✅ Bağlantı tamamlandı!";
+            status.innerText = "✅ Bağlantı başarılı!";
             tg.MainButton.hide(); // Kapatma butonunu gizle
         });
     }
