@@ -2,18 +2,21 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin-top: 20px;
-    background-color: var(--tg-theme-bg-color, #ffffff);
-    color: var(--tg-theme-text-color, #000000);
+    background: url('https://cashup28.github.io/background.png') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--tg-theme-text-color, #ffffff);
 }
 
 h2 {
     font-size: 30px;
     font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 h3 {
     font-size: 26px;
     margin-top: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 button {
@@ -30,6 +33,7 @@ button {
     background-color: var(--tg-theme-button-color, #0088cc);
     color: white;
     transition: background 0.3s ease-in-out;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 button:hover {
@@ -40,4 +44,5 @@ button:hover {
     font-size: 22px;
     font-weight: bold;
     margin-top: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
