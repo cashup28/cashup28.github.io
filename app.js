@@ -12,7 +12,7 @@ const status = document.getElementById('status');
 // Cüzdan bağlantı durumunu kontrol et
 async function updateWalletStatus() {
     try {
-        const connectedWallet = await connector.getConnectedWallet();
+        const connectedWallet = await connector.restoreConnection(); // Doğru fonksiyon
         if (connectedWallet) {
             status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
             connectBtn.innerText = "🔴 Disconnect Wallet";
@@ -37,7 +37,7 @@ async function updateWalletStatus() {
 // Cüzdan bağlantısı
 async function connectWallet() {
     try {
-        const connectedWallet = await connector.getConnectedWallet();
+        const connectedWallet = await connector.restoreConnection(); // Doğru fonksiyon
         if (connectedWallet) {
             status.innerText = "⚠️ Zaten bir cüzdan bağlı! Önce bağlantıyı kes.";
             return;
