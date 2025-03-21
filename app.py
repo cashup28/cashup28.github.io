@@ -10,7 +10,7 @@ def home():
 def connect_wallet():
     data = request.json
     wallet_address = data.get("wallet_address")
-    
+
     if not wallet_address:
         return jsonify({"error": "Cüzdan adresi belirtilmedi"}), 400
 

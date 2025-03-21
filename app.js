@@ -14,43 +14,47 @@ async function updateWalletStatus() {
     try {
         const connectedWallet = await connector.restoreConnection();
         if (connectedWallet) {
-            status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
+            status.innerText = `✅ Cüzdan Bağlandı: ${connectedWallet.account.address}`;
             connectBtn.innerText = "🔴 Disconnect Wallet";
             connectBtn.style.backgroundColor = "#ff4444"; // Kırmızı buton
             connectBtn.onclick = async () => {
                 await connector.disconnect();
-                status.innerText = "🔗 Cüzdan bağlantısı kesildi!";
+                status.innerText = "⚠️ Cüzdan bağlantısı kesildi!";
                 connectBtn.innerText = "🔵 Connect Wallet";
                 connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
                 connectBtn.onclick = connectWallet;
             };
         } else {
+            status.innerText = "⚠️ Cüzdan bağlı değil!";
             connectBtn.innerText = "🔵 Connect Wallet";
             connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
             connectBtn.onclick = connectWallet;
         }
     } catch (error) {
-        status.innerText = "⚠️ Cüzdan durumu alınamadı: " + error.message;
+        console.error("Cüzdan bağlantı hatası:", error);
+        status.innerText = "❌ Cüzdan bağlantı hatası!";
     }
 }
 
-// Cüzdan bağlantısı için TON Connect modalını aç
+// Cüzdanı bağlama fonksiyonu
 async function connectWallet() {
     try {
-        const connectedWallet = await connector.restoreConnection();
-        if (connectedWallet) {
-            status.innerText = "⚠️ Zaten bir cüzdan bağlı! Önce bağlantıyı kes.";
-            return;
-        }
-
-        // TON Connect'in standart bağlantı penceresini aç
-        await connector.connect();
-
+        const wallet = await connector.connectWallet();
+        status.innerText = `✅ Cüzdan Bağlandı: ${wallet.account.address}`;
+        connectBtn.innerText = "🔴 Disconnect Wallet";
+        connectBtn.style.backgroundColor = "#ff4444"; // Kırmızı buton
+        connectBtn.onclick = async () => {
+            await connector.disconnect();
+            status.innerText = "⚠️ Cüzdan bağlantısı kesildi!";
+            connectBtn.innerText = "🔵 Connect Wallet";
+            connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
+            connectBtn.onclick = connectWallet;
+        };
     } catch (error) {
-        status.innerText = "⚠️ Bağlantı hatası: " + error.message;
+        console.error("Bağlantı hatası:", error);
+        status.innerText = "❌ Cüzdan bağlanamadı!";
     }
 }
 
-// Sayfa açıldığında bağlantı durumunu kontrol et
+// İlk başlatmada cüzdan durumunu kontrol et
 updateWalletStatus();
-connectBtn.onclick = connectWallet;
