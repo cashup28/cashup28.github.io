@@ -1,4 +1,5 @@
-import { TonConnect } from "https://unpkg.com/@tonconnect/sdk@latest";
+import TonConnectSDK from "https://unpkg.com/@tonconnect/sdk@latest";
+const connector = new TonConnectSDK.TonConnect();
 
 // Telegram WebApp API kontrolü
 if (window.Telegram && window.Telegram.WebApp) {
