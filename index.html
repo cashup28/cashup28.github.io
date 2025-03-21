@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MonitorEx - TON Wallet Bağlantısı</title>
+    <title>MonTonEx - TON Wallet</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+    <script src="app.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>MonitorEx</h1>
-        <p>TON Wallet Bağlantısı</p>
-        <button id="connect-btn">🔵 Connect Wallet</button>
-        <div id="status"></div>
+
+    <div class="logo-container">
+        <img src="https://cashup28.github.io/icon.png" alt="MonTonEx Logo" class="logo">
     </div>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://unpkg.com/@tonconnect/sdk"></script>
-    <script src="app.js"></script> <!-- script.js yerine app.js kullanıldı -->
+
+    <h2>👋 TON Wallet Bağlantısı</h2>
+    <button id="connect-btn">🔗 Cüzdanı Bağla</button>
+    <p id="status">🔄 Bağlantı durumu kontrol ediliyor...</p>
+
 </body>
 </html>
