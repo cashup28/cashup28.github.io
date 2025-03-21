@@ -9,31 +9,35 @@ const connector = new TonConnectSDK.TonConnect({
 const connectBtn = document.getElementById('connect-btn');
 const status = document.getElementById('status');
 
-// Cüzdan bağlantı durumu kontrolü
+// Cüzdan bağlantı durumunu kontrol et
 async function updateWalletStatus() {
-    const connectedWallet = await connector.restoreConnection();
-    if (connectedWallet) {
-        status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
-        connectBtn.innerText = "🔴 Disconnect Wallet";
-        connectBtn.style.backgroundColor = "#ff4444"; // Kırmızı buton
-        connectBtn.onclick = async () => {
-            await connector.disconnect();
-            status.innerText = "🔗 Cüzdan bağlantısı kesildi!";
+    try {
+        const connectedWallet = await connector.getConnectedWallet();
+        if (connectedWallet) {
+            status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
+            connectBtn.innerText = "🔴 Disconnect Wallet";
+            connectBtn.style.backgroundColor = "#ff4444"; // Kırmızı buton
+            connectBtn.onclick = async () => {
+                await connector.disconnect();
+                status.innerText = "🔗 Cüzdan bağlantısı kesildi!";
+                connectBtn.innerText = "🔵 Connect Wallet";
+                connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
+                connectBtn.onclick = connectWallet;
+            };
+        } else {
             connectBtn.innerText = "🔵 Connect Wallet";
             connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
             connectBtn.onclick = connectWallet;
-        };
-    } else {
-        connectBtn.innerText = "🔵 Connect Wallet";
-        connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
-        connectBtn.onclick = connectWallet;
+        }
+    } catch (error) {
+        status.innerText = "⚠️ Cüzdan durumu alınamadı: " + error.message;
     }
 }
 
 // Cüzdan bağlantısı
 async function connectWallet() {
     try {
-        const connectedWallet = await connector.restoreConnection();
+        const connectedWallet = await connector.getConnectedWallet();
         if (connectedWallet) {
             status.innerText = "⚠️ Zaten bir cüzdan bağlı! Önce bağlantıyı kes.";
             return;
