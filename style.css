@@ -1,66 +1,43 @@
 body {
-    background-image: url('background.jpg'); /* Arka plan resmi */
-    background-size: cover;
-    background-position: center;
     font-family: Arial, sans-serif;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     text-align: center;
+    margin-top: 20px;
+    background-color: var(--tg-theme-bg-color, #ffffff);
+    color: var(--tg-theme-text-color, #000000);
 }
 
-.container {
-    background: rgba(0, 0, 0, 0.7); /* Yarı saydam arka plan */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+h2 {
+    font-size: 30px;
+    font-weight: bold;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+h3 {
+    font-size: 26px;
+    margin-top: 20px;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #0088cc;
-    border: none;
-    border-radius: 5px;
+    display: block;
+    width: 90%;
+    max-width: 380px;
+    margin: 15px auto;
+    padding: 18px;
+    font-size: 22px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: white;
+    transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: #005f8a;
+    background-color: #005f8f;
 }
 
 #status {
+    font-size: 22px;
+    font-weight: bold;
     margin-top: 20px;
-    font-size: 1rem;
-}
-
-#status button {
-    margin: 5px;
-    padding: 10px;
-    background-color: #0088cc;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#status button:hover {
-    background-color: #005f8a;
 }
