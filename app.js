@@ -9,18 +9,38 @@ const connector = new TonConnectSDK.TonConnect({
 const connectBtn = document.getElementById('connect-btn');
 const status = document.getElementById('status');
 
-connectBtn.onclick = async () => {
+// Cüzdan bağlantı durumu kontrolü
+async function updateWalletStatus() {
+    const connectedWallet = await connector.restoreConnection();
+    if (connectedWallet) {
+        status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
+        connectBtn.innerText = "🔴 Disconnect Wallet";
+        connectBtn.onclick = async () => {
+            await connector.disconnect();
+            status.innerText = "🔗 Cüzdan bağlantısı kesildi!";
+            connectBtn.innerText = "🔵 Connect Wallet";
+            connectBtn.onclick = connectWallet;
+        };
+    }
+}
+
+// Cüzdan bağlantısı
+async function connectWallet() {
     try {
         const walletsList = await connector.getWallets();
         
-        if (walletsList.length === 0) {
+        // Sadece en popüler 6 cüzdanı alalım
+        const popularWallets = walletsList.filter(wallet =>
+            ["Tonkeeper", "Tonhub", "MyTonWallet", "OKX Mini Wallet", "Binance Wallet", "SafePal"].includes(wallet.name)
+        );
+
+        if (popularWallets.length === 0) {
             status.innerText = "❌ Hiçbir TON cüzdanı bulunamadı!";
             return;
         }
 
-        // Kullanıcıya tüm cüzdanları göster
         status.innerHTML = "<h3>Bir cüzdan seç:</h3>";
-        walletsList.forEach(wallet => {
+        popularWallets.forEach(wallet => {
             const button = document.createElement('button');
             button.textContent = wallet.name;
             button.onclick = async () => {
@@ -41,19 +61,8 @@ connectBtn.onclick = async () => {
     } catch (error) {
         status.innerText = "⚠️ Bağlantı hatası: " + error.message;
     }
-};
+}
 
-// Cüzdan bağlandığında işlemi yönet
-connector.onStatusChange(wallet => {
-    if (wallet) {
-        status.innerText = `✅ Cüzdan başarıyla bağlandı:\n${wallet.account.address}`;
-        tg.MainButton.setText('Tamamlandı').show();
-        tg.sendData(JSON.stringify({ wallet: wallet.account.address }));
-
-        // Mini App kapanmasını engelle
-        tg.MainButton.onClick(() => {
-            status.innerText = "✅ Bağlantı başarılı!";
-            tg.MainButton.hide(); // Kapatma butonunu gizle
-        });
-    }
-});
+// Sayfa açıldığında bağlantı durumunu kontrol et
+updateWalletStatus();
+connectBtn.onclick = connectWallet;
