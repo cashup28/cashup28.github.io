@@ -39,3 +39,14 @@ h3 {
     transition: background 0.3s ease-in-out;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
+
+button:hover {
+    background-color: #005f8f;
+}
+
+#status {
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
