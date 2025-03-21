@@ -1,5 +1,9 @@
-import TonConnectSDK from "https://unpkg.com/@tonconnect/sdk@latest";
-const connector = new TonConnectSDK.TonConnect();
+import TonConnect from "@tonconnect/sdk";
+
+// TonConnect başlat
+const connector = new TonConnect({
+    manifestUrl: 'https://cashup28.github.io/tonconnect-manifest.json'
+});
 
 // Telegram WebApp API kontrolü
 if (window.Telegram && window.Telegram.WebApp) {
@@ -8,11 +12,6 @@ if (window.Telegram && window.Telegram.WebApp) {
 } else {
     console.error("Telegram WebApp API bulunamadı!");
 }
-
-// TON Connect başlat
-const connector = new TonConnect({
-    manifestUrl: 'https://cashup28.github.io/tonconnect-manifest.json'
-});
 
 const connectBtn = document.getElementById("connect-btn");
 const status = document.getElementById("status");
@@ -35,6 +34,9 @@ async function updateWalletStatus() {
             };
         } else {
             status.innerText = "❌ Cüzdan bağlı değil";
+            connectBtn.innerText = "🔵 Connect Wallet";
+            connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
+            connectBtn.onclick = connectWallet;
         }
     } catch (error) {
         console.error("Cüzdan durumu alınamadı:", error);
@@ -51,5 +53,5 @@ async function connectWallet() {
     }
 }
 
-connectBtn.onclick = connectWallet;
+// Sayfa yüklendiğinde cüzdan durumunu güncelle
 updateWalletStatus();
