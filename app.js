@@ -34,7 +34,7 @@ async function updateWalletStatus() {
     }
 }
 
-// Cüzdan bağlantısı
+// Cüzdan bağlantısı için TON Connect modalını aç
 async function connectWallet() {
     try {
         const connectedWallet = await connector.restoreConnection();
@@ -43,36 +43,8 @@ async function connectWallet() {
             return;
         }
 
-        const walletsList = await connector.getWallets();
-        
-        // Sadece en popüler 6 cüzdanı göster
-        const popularWallets = walletsList.filter(wallet =>
-            ["Tonkeeper", "Tonhub", "MyTonWallet", "OKX Mini Wallet", "Binance Wallet", "SafePal"].includes(wallet.name)
-        );
-
-        if (popularWallets.length === 0) {
-            status.innerText = "❌ Hiçbir TON cüzdanı bulunamadı!";
-            return;
-        }
-
-        status.innerHTML = "<h3>Bir cüzdan seç:</h3>";
-        popularWallets.forEach(wallet => {
-            const button = document.createElement('button');
-            button.textContent = wallet.name;
-            button.onclick = async () => {
-                try {
-                    const connectUrl = await connector.connect({
-                        universalLink: wallet.universalLink,
-                        bridgeUrl: wallet.bridgeUrl
-                    });
-
-                    tg.openLink(connectUrl); // Telegram içinden bağlantıyı aç
-                } catch (err) {
-                    status.innerText = "❌ Bağlantı hatası: " + err.message;
-                }
-            };
-            status.appendChild(button);
-        });
+        // TON Connect'in standart bağlantı penceresini aç
+        await connector.connect();
 
     } catch (error) {
         status.innerText = "⚠️ Bağlantı hatası: " + error.message;
