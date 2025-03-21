@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin-top: 20px;
-    background: url('https://cashup28.github.io/background.png') no-repeat center center fixed;
+    background: url('https://cashup28.github.io/background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: var(--tg-theme-text-color, #ffffff);
 }
