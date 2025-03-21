@@ -21,15 +21,24 @@ async function updateWalletStatus() {
             connectBtn.innerText = "🔵 Connect Wallet";
             connectBtn.onclick = connectWallet;
         };
+    } else {
+        connectBtn.innerText = "🔵 Connect Wallet";
+        connectBtn.onclick = connectWallet;
     }
 }
 
 // Cüzdan bağlantısı
 async function connectWallet() {
     try {
+        const connectedWallet = await connector.restoreConnection();
+        if (connectedWallet) {
+            status.innerText = "⚠️ Zaten bir cüzdan bağlı! Önce bağlantıyı kes.";
+            return;
+        }
+
         const walletsList = await connector.getWallets();
         
-        // Sadece en popüler 6 cüzdanı alalım
+        // Sadece en popüler 6 cüzdanı göster
         const popularWallets = walletsList.filter(wallet =>
             ["Tonkeeper", "Tonhub", "MyTonWallet", "OKX Mini Wallet", "Binance Wallet", "SafePal"].includes(wallet.name)
         );
