@@ -39,24 +39,3 @@ h3 {
     transition: background 0.3s ease-in-out;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
-
-/* Butona ikon ekleme */
-#connect-btn::before {
-    content: "";
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    background: url('https://cashup28.github.io/icon.png') no-repeat center center;
-    background-size: contain;
-}
-
-button:hover {
-    background-color: #005f8f;
-}
-
-#status {
-    font-size: 11px;
-    font-weight: bold;
-    margin-top: 10px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
