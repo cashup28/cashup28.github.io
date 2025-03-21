@@ -9,34 +9,32 @@ const connector = new TonConnectSDK.TonConnect({
 const connectBtn = document.getElementById('connect-btn');
 const status = document.getElementById('status');
 
-// Cüzdan bağlantı durumunu kontrol et
+// Cüzdan bağlantı durumu kontrolü
 async function updateWalletStatus() {
     try {
         const connectedWallet = await connector.restoreConnection();
         if (connectedWallet) {
-            status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address.slice(0, 6)}...${connectedWallet.account.address.slice(-4)}`;
+            status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
             connectBtn.innerText = "🔴 Disconnect Wallet";
-            connectBtn.style.backgroundColor = "#ff4444";
+            connectBtn.style.backgroundColor = "#ff4444"; // Kırmızı buton
             connectBtn.onclick = async () => {
                 await connector.disconnect();
                 status.innerText = "🔗 Cüzdan bağlantısı kesildi!";
                 connectBtn.innerText = "🔵 Connect Wallet";
-                connectBtn.style.backgroundColor = "#0088cc";
+                connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
                 connectBtn.onclick = connectWallet;
             };
         } else {
-            status.innerText = "🔗 Cüzdan bağlı değil!";
             connectBtn.innerText = "🔵 Connect Wallet";
-            connectBtn.style.backgroundColor = "#0088cc";
+            connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
             connectBtn.onclick = connectWallet;
         }
     } catch (error) {
         status.innerText = "⚠️ Cüzdan durumu alınamadı: " + error.message;
-        console.error("Cüzdan durumu hatası:", error);
     }
 }
 
-// Cüzdan bağlantısı kur
+// Cüzdan bağlantısı
 async function connectWallet() {
     try {
         const connectedWallet = await connector.restoreConnection();
@@ -46,6 +44,8 @@ async function connectWallet() {
         }
 
         const walletsList = await connector.getWallets();
+        
+        // Sadece en popüler 6 cüzdanı göster
         const popularWallets = walletsList.filter(wallet =>
             ["Tonkeeper", "Tonhub", "MyTonWallet", "OKX Mini Wallet", "Binance Wallet", "SafePal"].includes(wallet.name)
         );
@@ -59,22 +59,16 @@ async function connectWallet() {
         popularWallets.forEach(wallet => {
             const button = document.createElement('button');
             button.textContent = wallet.name;
-            button.style.margin = "5px";
-            button.style.padding = "10px";
-            button.style.backgroundColor = "#0088cc";
-            button.style.color = "#fff";
-            button.style.border = "none";
-            button.style.borderRadius = "5px";
             button.onclick = async () => {
                 try {
                     const connectUrl = await connector.connect({
                         universalLink: wallet.universalLink,
                         bridgeUrl: wallet.bridgeUrl
                     });
-                    tg.openLink(connectUrl);
+
+                    tg.openLink(connectUrl); // Telegram içinden bağlantıyı aç
                 } catch (err) {
                     status.innerText = "❌ Bağlantı hatası: " + err.message;
-                    console.error("Bağlantı hatası:", err);
                 }
             };
             status.appendChild(button);
@@ -82,10 +76,9 @@ async function connectWallet() {
 
     } catch (error) {
         status.innerText = "⚠️ Bağlantı hatası: " + error.message;
-        console.error("Bağlantı hatası:", error);
     }
 }
 
-// Sayfa yüklendiğinde cüzdan durumunu güncelle
+// Sayfa açıldığında bağlantı durumunu kontrol et
 updateWalletStatus();
 connectBtn.onclick = connectWallet;
