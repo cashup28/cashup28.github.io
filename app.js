@@ -15,14 +15,17 @@ async function updateWalletStatus() {
     if (connectedWallet) {
         status.innerText = `✅ Cüzdan bağlı: ${connectedWallet.account.address}`;
         connectBtn.innerText = "🔴 Disconnect Wallet";
+        connectBtn.style.backgroundColor = "#ff4444"; // Kırmızı buton
         connectBtn.onclick = async () => {
             await connector.disconnect();
             status.innerText = "🔗 Cüzdan bağlantısı kesildi!";
             connectBtn.innerText = "🔵 Connect Wallet";
+            connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
             connectBtn.onclick = connectWallet;
         };
     } else {
         connectBtn.innerText = "🔵 Connect Wallet";
+        connectBtn.style.backgroundColor = "#0088cc"; // Mavi buton
         connectBtn.onclick = connectWallet;
     }
 }
