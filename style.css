@@ -7,28 +7,29 @@ body {
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 24px;
     margin-top: 15px;
 }
 
 button {
     display: block;
-    width: 80%;
-    max-width: 300px;
-    margin: 10px auto;
-    padding: 12px;
-    font-size: 18px;
+    width: 85%;
+    max-width: 350px;
+    margin: 12px auto;
+    padding: 16px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: var(--tg-theme-button-color, #0088cc);
     color: white;
+    transition: background 0.3s ease-in-out;
 }
 
 button:hover {
@@ -36,7 +37,7 @@ button:hover {
 }
 
 #status {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     margin-top: 15px;
 }
