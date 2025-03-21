@@ -1,10 +1,10 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    margin-top: 20px;
     background: url('https://cashup28.github.io/background.jpg') no-repeat center center fixed;
     background-size: cover;
-    color: white;
-    margin-top: 20px;
+    color: var(--tg-theme-text-color, #ffffff);
 }
 
 h2 {
@@ -27,18 +27,18 @@ h2 {
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    background-color: #0088cc;
+    background-color: var(--tg-theme-button-color, #0088cc);
     color: white;
     transition: background 0.3s ease-in-out;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
-#connect-btn:hover {
+button:hover {
     background-color: #005f8f;
 }
 
 #status {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     margin-top: 10px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
