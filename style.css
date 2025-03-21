@@ -1,23 +1,42 @@
 body {
-    font-family: sans-serif;
+    font-family: Arial, sans-serif;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
     background-color: var(--tg-theme-bg-color, #ffffff);
     color: var(--tg-theme-text-color, #000000);
 }
 
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 20px;
+    margin-top: 15px;
+}
+
 button {
-    padding: 10px 15px;
-    font-size: 16px;
-    margin: 5px;
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--tg-theme-button-color, #0088cc);
+    color: white;
+}
+
+button:hover {
+    background-color: #005f8f;
 }
 
 #status {
+    font-size: 18px;
     font-weight: bold;
-    margin-top: 20px;
-}
-
-#wallet-list {
-    margin-top: 20px;
+    margin-top: 15px;
 }
